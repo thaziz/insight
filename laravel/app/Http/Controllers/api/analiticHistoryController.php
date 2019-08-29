@@ -74,6 +74,75 @@ class analiticHistoryController extends Controller
         } catch (\Exception $e) {
           DB::rollback();
 
+          $data=['status'=>'gagal','konten'=>$e->getMessage()];
+          return json_encode($data);
+        }
+        
+    }
+
+public function data(){
+  $data=DB::table('analitic_history')->get();
+          $data=['status'=>'berhasil','konten'=>$data];
+          return json_encode($data);
+}
+
+public function show($id_profile_ig){
+  $data=DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig)->first();
+          $data=['status'=>'berhasil','konten'=>$data];
+          return json_encode($data);
+}
+
+public function update($id_profile_ig,Request $req) {       
+      DB::beginTransaction();
+        try {      
+        $rules = array(
+            'id_profile_ig' => 'required', 
+            'time_stamp' => 'required', 
+            'follower_count' => 'required', 
+            'post_count' => 'required', 
+            'daily_engagement_rate'=> 'required', 
+            'following' =>'required', 
+        );
+          $custom=[
+                  'unique'             => ':Attribute Sudah Terdaftar.',
+                  'required'             => ':Attribute Wajib Di isi.',
+                  'email'                => 'Alamat E-Mail belum benar.',                    
+                  'min'                  => [
+                        'numeric' => ':Attribute Minimal :min Karakter.',                        
+                        'string'  => ':Attribute Minimal :min Karakter.',    
+                        'file'  => ':Attribute Tidak Boleh Kosong.',    
+
+                        
+                    ],
+
+                ];
+        $validator = Validator::make($req->all(), $rules,$custom);
+        if ($validator->fails()) {            
+                 $eror='';
+          foreach ($validator->errors()->all() as $key => $value) {
+                  $eror.=$value.'<br>';
+          }
+          $dataInfo=['status'=>'gagal','pesan'=>$eror];            
+          return json_encode($dataInfo);        
+        } else {           
+            DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig)
+            ->update([
+                'id_profile_ig' =>$req->id_profile_ig,
+                'time_stamp' => $req->time_stamp,
+                'follower_count' => $req->follower_count, 
+                'post_count' => $req->post_count,
+                'daily_engagement_rate'=>$req->daily_engagement_rate, 
+                'following' =>$req->following, 
+                ]);
+            
+        }
+          DB::commit();
+          $data=['status'=>'berhasil','konten'=>'Data Berhasil Diperbarui'];
+          return json_encode($data);
+          
+        } catch (\Exception $e) {
+          DB::rollback();
+
           $data=['status'=>'gagal','pesan'=>$e->getMessage()];
           return json_encode($data);
         }
@@ -81,45 +150,18 @@ class analiticHistoryController extends Controller
     }
 
 
-    function logout(Request $req){
-      DB::beginTransaction();
-        try {
-          $user = Pengguna::where('u_id',$req->id)->first();
-          if($user){
-            $session=DB::table('session')
-                            ->where('s_user_id',$req->id)
-                            ->first();
-            $dataInfo=['status'=>'sukses','konten'=>'Logout Berhasil'];            
+    public function delete($id_profile_ig){
+          $data=DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig);
+          if($data->first()){
+          $data->delete();
+            $data=['status'=>'berhasil','Data Berhasil Dihapus'];
+            return json_encode($data);
           }else{
-            $dataInfo=['status'=>'gagal','konten'=>'Logout Gagal'];            
-          }          
-          DB::commit();                    
-          return json_encode($dataInfo);
-        } catch (\Exception $e) {
-          DB::rollback();
-
-          $data=['status'=>'gagal','konten'=>$e->getMessage()];
-          return json_encode($data);
-        }
-        
-
-
-
-    }
-
-    
-
-    function token($value)
-    {
-      $keyspace = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      $str = '';
-      $max = mb_strlen($keyspace, '8bit') - 1;
-      for ($i = 0; $i < $value; ++$i) {
-        $str .= $keyspace[random_int(0, $max)];
-      }
-      return $str;
-    }
-
+            $data=['status'=>'gagal','konten'=>'Data Tidak Ditemukan'];
+            return json_encode($data);
+          }
+          
+}
 
 
 }

@@ -22,6 +22,11 @@ Route::POST('login', 'api\apiLoginController@authenticate');
 Route::POST('logout', 'api\apiLoginController@logout');  
 
 Route::POST('analitic-history/create', 'api\analiticHistoryController@create');  
+Route::POST('analitic-history/show/{id}', 'api\analiticHistoryController@show');  
+Route::GET('analitic-history/data', 'api\analiticHistoryController@data');  
+Route::POST('analitic-history/update/{id}', 'api\analiticHistoryController@update');  
+Route::delete('analitic-history/delete/{id}', 'api\analiticHistoryController@delete');  
+
 
   
 
