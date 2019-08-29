@@ -46,6 +46,11 @@ class apiLoginController extends Controller
             $start=date('Y-m-d H:i:s');                
             $end=$member->m_status_expired;
 
+            if($member->m_status_verifikasi=='N'){
+                $dataInfo=['status'=>'gagal','konten'=>'Account Belum Diaktifasi'];            
+                return json_encode($dataInfo);
+            }            
+
             if($start>=$end){
                 $dataInfo=['status'=>'gagal','konten'=>'Login Expired'];            
                 return json_encode($dataInfo);
