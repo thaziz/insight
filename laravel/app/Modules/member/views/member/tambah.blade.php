@@ -26,9 +26,40 @@
 							<input type="hidden" name="m_id">						
 
 							<div class="col-md-2 col-sm-6 col-xs-12">
+								<label>Nama <span style="color: red"> *</span></label>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<div class="form-group form-group-sm" id="div_kategori">
+									<input class="form-control" type="" name="" readonly="" value="{{$data->m_username}}">
+								</div>
+							</div>
+
+							<div class="col-md-2 col-sm-6 col-xs-12">
+								<label>Email <span style="color: red"> *</span></label>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<div class="form-group form-group-sm" id="div_kategori">
+									<input class="form-control" type="" name="" readonly="" value="{{$data->m_email}}">
+								</div>
+							</div>
+
+
+							<div class="col-md-2 col-sm-6 col-xs-12">
+								<label>No Telpon <span style="color: red"> *</span></label>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<div class="form-group form-group-sm" id="div_kategori">
+									<input class="form-control" type="" name="" readonly="" value="{{$data->m_hp}}">
+								</div>
+							</div>
+
+
+
+
+							<div class="col-md-2 col-sm-6 col-xs-12">
 								<label>Paket <span style="color: red"> *</span></label>
 							</div>
-							<div class="col-md-10 col-sm-6 col-xs-12">
+							<div class="col-md-4 col-sm-6 col-xs-12">
 								<div class="form-group form-group-sm" id="div_kategori">
 									<select class="form-control">
 										@foreach($paket as $p)
@@ -41,7 +72,7 @@
 							<div class="col-md-2 col-sm-6 col-xs-12">
 								<label>Bank <span style="color: red"> *</span></label>
 							</div>
-							<div class="col-md-10 col-sm-6 col-xs-12">
+							<div class="col-md-4 col-sm-6 col-xs-12">
 								<div class="form-group form-group-sm" id="div_kategori">
 									<select class="form-control">
 										@foreach($bank as $b)
@@ -54,9 +85,10 @@
 							<div class="col-md-2 col-sm-6 col-xs-12">
 								<label>Bukti Transfer <span style="color: red"> *</span></label>
 							</div>
-							<div class="col-md-10 col-sm-6 col-xs-12">
+
+							<div class="col-md-4 col-sm-6 col-xs-12">
 								<div class="form-group form-group-sm" id="div_kategori">
-									<input type="file" name="">
+									<input class="form-control" type="file" name="">
 								</div>
 							</div>
 
@@ -69,7 +101,8 @@
 
 										<div class="widget-footer enter">											
 											<button type="button" class="btn btn-primary" onclick="simpan()">Simpan</button>
-											<a href="" class="btn btn-default">Kembali</a>
+											<a href="{{route('member-aktifasi')}}" class="btn btn-default">Kembali</a>
+											
 										</div>
 
                     

@@ -18,14 +18,15 @@ use Carbon\Carbon;
 
 use Auth;
 
-class memberigProfile extends Controller
+class apiSubscribeController extends Controller
 {
     public function create(Request $req) {       
       DB::beginTransaction();
         try {      
         $rules = array(
-            'member_id' => 'required', 
-            'ig_profile_id' => 'required', 
+            'id_member' => 'required', 
+            'expired_date' => 'required', 
+            'id_paket' => 'required',             
         );
           $custom=[
                   'unique'             => ':Attribute Sudah Terdaftar.',
@@ -50,10 +51,11 @@ class memberigProfile extends Controller
           return json_encode($dataInfo);        
         } else {
             $data=[
-                'member_id' =>$req->member_id,
-                'ig_profile_id' => $req->ig_profile_id,                
+                'id_member' => $req->id_member, 
+                'expired_date' => $req->expired_date, 
+                'id_paket' => $req->id_paket,                
                 ];
-            DB::table('member_ig_profile')
+            DB::table('subscribe')
             ->insert([  
                       $data
                     ]);
@@ -73,23 +75,24 @@ class memberigProfile extends Controller
     }
 
 public function data(){
-  $data=DB::table('member_ig_profile')->get();
+  $data=DB::table('subscribe')->get();
           $data=['status'=>'berhasil','konten'=>$data];
           return json_encode($data);
 }
 
-public function show($mi_id){
-  $data=DB::table('member_ig_profile')->where('mi_id',$mi_id)->first();
+public function show($s_id){
+  $data=DB::table('subscribe')->where('s_id',$s_id)->first();
           $data=['status'=>'berhasil','konten'=>$data];
           return json_encode($data);
 }
 
-public function update($mi_id,Request $req) {       
+public function update($s_id,Request $req) {       
       DB::beginTransaction();
         try {      
         $rules = array(
-            'member_id' => 'required', 
-            'ig_profile_id' => 'required', 
+            'id_member' => 'required', 
+            'expired_date' => 'required', 
+            'id_paket' => 'required',             
         );
           $custom=[
                   'unique'             => ':Attribute Sudah Terdaftar.',
@@ -113,10 +116,11 @@ public function update($mi_id,Request $req) {
           $dataInfo=['status'=>'gagal','pesan'=>$eror];            
           return json_encode($dataInfo);        
         } else {           
-            DB::table('member_ig_profile')->where('mi_id',$mi_id)
+            DB::table('subscribe')->where('s_id',$s_id)
             ->update([
-                'member_id' =>$req->member_id,
-                'ig_profile_id' => $req->ig_profile_id,                
+                'id_member' => $req->id_member, 
+                'expired_date' => $req->expired_date, 
+                'id_paket' => $req->id_paket,                
                 ]);
             
         }
@@ -134,8 +138,8 @@ public function update($mi_id,Request $req) {
     }
 
 
-    public function delete($mi_id){
-          $data=DB::table('member_ig_profile')->where('mi_id',$mi_id);
+    public function delete($s_id){
+          $data=DB::table('subscribe')->where('s_id',$s_id);
           if($data->first()){
           $data->delete();
             $data=['status'=>'berhasil','Data Berhasil Dihapus'];

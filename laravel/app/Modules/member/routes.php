@@ -2,8 +2,10 @@
 
 Route::group(['namespace' => 'App\Modules\member\Controllers', 'middleware'=>['web','auth']], function () {
 
-	Route::get('member-aktifasi/index', 'memberAktivasiController@index');    
+	Route::get('member-aktifasi/index', 'memberAktivasiController@index')->name('member-aktifasi');    
 	Route::POST('member-aktifasi/data', 'memberAktivasiController@data')->name('member-aktifasi-data');    
+	Route::POST('member-aktifasi/data-child', 'memberAktivasiController@dataChild')->name('member-aktifasi-data-child');    
+	
 	Route::get('member-aktifasi/verivikasi/{id}/{token}', 'memberAktivasiController@data_verifikasi')->name('member-aktifasi-tambah');
 	Route::POST('master-user/simpan', 'masterUserController@simpan')->name('simpan_user');
 	Route::get('master-user/edit/{id}', 'masterUserController@edit')->name('edit_user');

@@ -16,7 +16,7 @@
                 	<div class="row">
                 		<div class="col-sm-12">
 	                		 <div class="col-sm-12">
-                          <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Tambah Member</button>
+                          <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Tambah Team</button>
                         </div>
                 		</div>
                 	</div>
@@ -37,6 +37,31 @@
 							</tbody>
 						</table>
                     </div>
+
+            <div class="table-responsive">                                    
+              <div>                
+                <H3>
+                  <b>List Team</b>
+                </H3>
+
+              </div>
+                        <table class="table table-striped table-bordered table-hover" id="child" width="100%">
+                          <thead>
+                            <tr>                  
+                              <th data-class="expand">Nama</th>
+                              <th data-class="expand">E-mail</th>
+                              <th data-class="expand">No Telpon</th>                  
+                              <th data-class="expand">Tanggal Expired</th>
+                              <th data-class="expand">Status</th>
+                              <th>Aksi</th>
+                            </tr>
+                          </thead>
+                          <tbody id="showdata">
+                          </tbody>
+                        </table>
+            </div>
+
+
                 </div>
             </div>
         </div>
@@ -63,7 +88,7 @@
               </div>
               <div class="col-md-7 col-sm-6 col-xs-12">
                 <div class="form-group form-group-sm" id="div_kategori">
-                  <input type="number" name="m_id" value="{{$m_id}}">
+                  <input type="hidden" name="m_id" value="{{$m_id}}">
                     <input class="form-control" type="text" name="nama">
                 </div>
               </div>
@@ -130,6 +155,7 @@ var tablex;
 setTimeout(function () {
             
    table();
+   tablechild()
       }, 200);
 
 function table(){
@@ -168,6 +194,47 @@ function table(){
            
     });
 }
+
+
+
+
+function tablechild(){
+   $('#child').dataTable().fnDestroy();
+   tablex = $("#child").DataTable({        
+         responsive: true,
+        "language": dataTableLanguage,
+    processing: true,
+            serverSide: true,
+            ajax: {
+              "url": "{{route('member-aktifasi-data-child')}}",
+              "type": "POST",
+              data: {
+                    "_token": "{{ csrf_token() }}",
+                    "type"  :"toko",
+                    "tanggal1" :$('#tanggal1').val(),
+                    "tanggal2" :$('#tanggal2').val(),
+                    },
+              },
+            columns: [
+            
+            {data: 'm_username', name: 'm_username'},
+            {data: 'm_email', name: 'm_email'},
+            {data: 'm_hp', name: 'm_hp'},
+            {data: 'm_status_expired', name: 'm_status_expired'},
+            {data: 'status', name: 'status'},
+            {data: 'action', name: 'action'},
+            
+            ],
+            //responsive: true,
+
+            "pageLength": 10,
+            "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+            
+             
+           
+    });
+}
+
 
 
 		function verifikasi(id,token){

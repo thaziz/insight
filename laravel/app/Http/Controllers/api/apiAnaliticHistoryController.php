@@ -18,15 +18,18 @@ use Carbon\Carbon;
 
 use Auth;
 
-class subscribeController extends Controller
+class apiAnaliticHistoryController extends Controller
 {
     public function create(Request $req) {       
       DB::beginTransaction();
         try {      
         $rules = array(
-            'id_member' => 'required', 
-            'expired_date' => 'required', 
-            'id_paket' => 'required',             
+            'id_profile_ig' => 'required', 
+            'time_stamp' => 'required', 
+            'follower_count' => 'required', 
+            'post_count' => 'required', 
+            'daily_engagement_rate'=> 'required', 
+            'following' =>'required', 
         );
           $custom=[
                   'unique'             => ':Attribute Sudah Terdaftar.',
@@ -51,18 +54,21 @@ class subscribeController extends Controller
           return json_encode($dataInfo);        
         } else {
             $data=[
-                'id_member' => $req->id_member, 
-                'expired_date' => $req->expired_date, 
-                'id_paket' => $req->id_paket,                
+                'id_profile_ig' =>$req->id_profile_ig,
+                'time_stamp' => $req->time_stamp,
+                'follower_count' => $req->follower_count, 
+                'post_count' => $req->post_count,
+                'daily_engagement_rate'=>$req->daily_engagement_rate, 
+                'following' =>$req->following, 
                 ];
-            DB::table('subscribe')
+            DB::table('analitic_history')
             ->insert([  
                       $data
                     ]);
             
         }
           DB::commit();
-          $data=['status'=>'berhasil','konten'=>'Data Berhasil Disimpan','member_id'=>$req->member_id];
+          $data=['status'=>'berhasil','konten'=>'Data Berhasil Disimpan'];
           return json_encode($data);
           
         } catch (\Exception $e) {
@@ -75,24 +81,27 @@ class subscribeController extends Controller
     }
 
 public function data(){
-  $data=DB::table('subscribe')->get();
+  $data=DB::table('analitic_history')->get();
           $data=['status'=>'berhasil','konten'=>$data];
           return json_encode($data);
 }
 
-public function show($s_id){
-  $data=DB::table('subscribe')->where('s_id',$s_id)->first();
+public function show($id_profile_ig){
+  $data=DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig)->first();
           $data=['status'=>'berhasil','konten'=>$data];
           return json_encode($data);
 }
 
-public function update($s_id,Request $req) {       
+public function update($id_profile_ig,Request $req) {       
       DB::beginTransaction();
         try {      
         $rules = array(
-            'id_member' => 'required', 
-            'expired_date' => 'required', 
-            'id_paket' => 'required',             
+            'id_profile_ig' => 'required', 
+            'time_stamp' => 'required', 
+            'follower_count' => 'required', 
+            'post_count' => 'required', 
+            'daily_engagement_rate'=> 'required', 
+            'following' =>'required', 
         );
           $custom=[
                   'unique'             => ':Attribute Sudah Terdaftar.',
@@ -116,11 +125,14 @@ public function update($s_id,Request $req) {
           $dataInfo=['status'=>'gagal','pesan'=>$eror];            
           return json_encode($dataInfo);        
         } else {           
-            DB::table('subscribe')->where('s_id',$s_id)
+            DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig)
             ->update([
-                'id_member' => $req->id_member, 
-                'expired_date' => $req->expired_date, 
-                'id_paket' => $req->id_paket,                
+                'id_profile_ig' =>$req->id_profile_ig,
+                'time_stamp' => $req->time_stamp,
+                'follower_count' => $req->follower_count, 
+                'post_count' => $req->post_count,
+                'daily_engagement_rate'=>$req->daily_engagement_rate, 
+                'following' =>$req->following, 
                 ]);
             
         }
@@ -138,8 +150,8 @@ public function update($s_id,Request $req) {
     }
 
 
-    public function delete($s_id){
-          $data=DB::table('subscribe')->where('s_id',$s_id);
+    public function delete($id_profile_ig){
+          $data=DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig);
           if($data->first()){
           $data->delete();
             $data=['status'=>'berhasil','Data Berhasil Dihapus'];

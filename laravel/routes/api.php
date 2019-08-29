@@ -21,16 +21,40 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::POST('login', 'api\apiLoginController@authenticate');    
 Route::POST('logout', 'api\apiLoginController@logout');  
 
-Route::POST('analitic-history/create', 'api\analiticHistoryController@create');  
-Route::POST('analitic-history/show/{id}', 'api\analiticHistoryController@show');  
-Route::GET('analitic-history/data', 'api\analiticHistoryController@data');  
-Route::POST('analitic-history/update/{id}', 'api\analiticHistoryController@update');  
-Route::delete('analitic-history/delete/{id}', 'api\analiticHistoryController@delete');  
+Route::POST('analitic-history/create', 'api\apiAnaliticHistoryController@create');  
+Route::POST('analitic-history/show/{id}', 'api\apiAnaliticHistoryController@show');  
+Route::GET('analitic-history/data', 'api\apiAnaliticHistoryController@data');  
+Route::POST('analitic-history/update/{id}', 'api\apiAnaliticHistoryController@update');  
+Route::delete('analitic-history/delete/{id}', 'api\apiAnaliticHistoryController@delete');  
+
+
+
+Route::POST('analitic-history/create', 'api\apiAnaliticHistoryController@create');  
+Route::POST('analitic-history/show/{id}', 'api\apiAnaliticHistoryController@show');  
+Route::GET('analitic-history/data', 'api\apiAnaliticHistoryController@data');  
+Route::POST('analitic-history/update/{id}', 'api\apiAnaliticHistoryController@update');  
+Route::delete('analitic-history/delete/{id}', 'api\apiAnaliticHistoryController@delete');  
+
+
+Route::POST('member-ig-profile/create', 'api\apiMemberigProfileController@create');  
+Route::POST('member-ig-profile/show/{id}', 'api\apiMemberigProfileController@show');  
+Route::GET('member-ig-profile/data', 'api\apiMemberigProfileController@data');  
+Route::POST('member-ig-profile/update/{id}', 'api\apiMemberigProfileController@update');  
+Route::delete('member-ig-profile/delete/{id}', 'api\apiMemberigProfileController@delete');  
+
+
+Route::POST('subscribe/create', 'api\apiSubscribeController@create');  
+Route::POST('subscribe/show/{id}', 'api\apiSubscribeController@show');  
+Route::GET('subscribe/data', 'api\apiSubscribeController@data');  
+Route::POST('subscribe/update/{id}', 'api\apiSubscribeController@update');  
+Route::delete('subscribe/delete/{id}', 'api\apiSubscribeController@delete');  
+
+
 
 
   
 
 Route::POST('register', 'registerController@register');    
-Route::GET('register/show/all', 'registerController@getAll');    
+Route::GET('register/show/data', 'registerController@getAll');    
 Route::GET('register/show/{id}', 'registerController@showRegister');    
-Route::delete('register/destroy/{task}', 'registerController@destroy');
+Route::delete('register/destroy/{id}', 'registerController@destroy');

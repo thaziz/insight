@@ -18,18 +18,14 @@ use Carbon\Carbon;
 
 use Auth;
 
-class analiticHistoryController extends Controller
+class apiMemberigProfileController extends Controller
 {
     public function create(Request $req) {       
       DB::beginTransaction();
         try {      
         $rules = array(
-            'id_profile_ig' => 'required', 
-            'time_stamp' => 'required', 
-            'follower_count' => 'required', 
-            'post_count' => 'required', 
-            'daily_engagement_rate'=> 'required', 
-            'following' =>'required', 
+            'member_id' => 'required', 
+            'ig_profile_id' => 'required', 
         );
           $custom=[
                   'unique'             => ':Attribute Sudah Terdaftar.',
@@ -54,21 +50,17 @@ class analiticHistoryController extends Controller
           return json_encode($dataInfo);        
         } else {
             $data=[
-                'id_profile_ig' =>$req->id_profile_ig,
-                'time_stamp' => $req->time_stamp,
-                'follower_count' => $req->follower_count, 
-                'post_count' => $req->post_count,
-                'daily_engagement_rate'=>$req->daily_engagement_rate, 
-                'following' =>$req->following, 
+                'member_id' =>$req->member_id,
+                'ig_profile_id' => $req->ig_profile_id,                
                 ];
-            DB::table('analitic_history')
+            DB::table('member_ig_profile')
             ->insert([  
                       $data
                     ]);
             
         }
           DB::commit();
-          $data=['status'=>'berhasil','konten'=>'Data Berhasil Disimpan'];
+          $data=['status'=>'berhasil','konten'=>'Data Berhasil Disimpan','member_id'=>$req->member_id];
           return json_encode($data);
           
         } catch (\Exception $e) {
@@ -81,27 +73,23 @@ class analiticHistoryController extends Controller
     }
 
 public function data(){
-  $data=DB::table('analitic_history')->get();
+  $data=DB::table('member_ig_profile')->get();
           $data=['status'=>'berhasil','konten'=>$data];
           return json_encode($data);
 }
 
-public function show($id_profile_ig){
-  $data=DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig)->first();
+public function show($mi_id){
+  $data=DB::table('member_ig_profile')->where('mi_id',$mi_id)->first();
           $data=['status'=>'berhasil','konten'=>$data];
           return json_encode($data);
 }
 
-public function update($id_profile_ig,Request $req) {       
+public function update($mi_id,Request $req) {       
       DB::beginTransaction();
         try {      
         $rules = array(
-            'id_profile_ig' => 'required', 
-            'time_stamp' => 'required', 
-            'follower_count' => 'required', 
-            'post_count' => 'required', 
-            'daily_engagement_rate'=> 'required', 
-            'following' =>'required', 
+            'member_id' => 'required', 
+            'ig_profile_id' => 'required', 
         );
           $custom=[
                   'unique'             => ':Attribute Sudah Terdaftar.',
@@ -125,14 +113,10 @@ public function update($id_profile_ig,Request $req) {
           $dataInfo=['status'=>'gagal','pesan'=>$eror];            
           return json_encode($dataInfo);        
         } else {           
-            DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig)
+            DB::table('member_ig_profile')->where('mi_id',$mi_id)
             ->update([
-                'id_profile_ig' =>$req->id_profile_ig,
-                'time_stamp' => $req->time_stamp,
-                'follower_count' => $req->follower_count, 
-                'post_count' => $req->post_count,
-                'daily_engagement_rate'=>$req->daily_engagement_rate, 
-                'following' =>$req->following, 
+                'member_id' =>$req->member_id,
+                'ig_profile_id' => $req->ig_profile_id,                
                 ]);
             
         }
@@ -150,8 +134,8 @@ public function update($id_profile_ig,Request $req) {
     }
 
 
-    public function delete($id_profile_ig){
-          $data=DB::table('analitic_history')->where('id_profile_ig',$id_profile_ig);
+    public function delete($mi_id){
+          $data=DB::table('member_ig_profile')->where('mi_id',$mi_id);
           if($data->first()){
           $data->delete();
             $data=['status'=>'berhasil','Data Berhasil Dihapus'];
