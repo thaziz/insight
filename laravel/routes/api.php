@@ -19,6 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::POST('login', 'api\apiLoginController@authenticate');    
+Route::POST('logout', 'api\apiLoginController@logout');  
+
+Route::POST('analitic-history/create', 'api\analiticHistoryController@create');  
+
+  
+
 Route::POST('register', 'registerController@register');    
 Route::GET('register/show/all', 'registerController@getAll');    
 Route::GET('register/show/{id}', 'registerController@showRegister');    
