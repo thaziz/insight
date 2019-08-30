@@ -33,7 +33,12 @@
         <div class="wrapper wrapper--w900">
             <div class="card card-6">
                 <div class="card-heading">
-                    <h2 class="title">Form Registrasi</h2>
+
+                    <h2 class="title">
+                        <a style="line-height: 40px" class="btn btn-success btn-sm">Login</a>
+                        Form Registrasi
+                        
+                    </h2>
                 </div>
                 <div class="card-body">                    
                     <form id="login">

@@ -22,9 +22,9 @@ Route::get('register/verify', 'registerController@verify')->name('register.verif
 Route::group(['middleware' => ['guest', 'web']], function() {
    
 
-    Route::get('/login/admin', function () {
+    Route::get('/login/member', function () {
         return view('login');
-    })->name('login');
+    })->name('login-member');
     Route::POST('login/masuk', 'loginController@authenticate');    
     });
      

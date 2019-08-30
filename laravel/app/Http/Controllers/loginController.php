@@ -41,6 +41,15 @@ class loginController extends Controller
                       return json_encode($dataInfo);
             }
 
+             
+                    if($user->u_role=='Admin'){
+                          Auth::login($user);
+                         $url='/admin';
+                          $dataInfo=['status'=>'sukses','nama'=>$user->u_username,'redirect'=>$url];
+                          return json_encode($dataInfo);
+                      }
+            
+
 
 
             $member=DB::table('member')->select('m_status_expired','m_status_verifikasi')->where('m_id',$user->u_member)->first();

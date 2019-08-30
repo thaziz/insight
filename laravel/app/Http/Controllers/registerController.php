@@ -25,6 +25,8 @@ public function verify(Request $req){
         DB::beginTransaction();
         try {                           
           $mem=DB::table('member')->where('m_activation_code',$req->token);
+          if($mem->first()){
+
           if($mem->first()->m_status_verifikasi=='N'){            
                 DB::table('member')->where('m_activation_code',$req->token)->update([
                   'm_status_verifikasi'=>'Y'
@@ -43,9 +45,14 @@ public function verify(Request $req){
           }else{
             return response (['status' => 'gagal','konten'=>'Verifikasi Sudah Dilakukan']);
           }
-                
+          }else{
+            return response (['status' => 'gagal','konten'=>'Kode Verifikasi Sudah Expired']); 
+          }                
           DB::commit();
-          return response (['status' => 'sukses','konten'=>'Verifikasi Berhasil']);
+          Session::flush();  
+          Auth::logout();
+          return redirect()->route('login-member');
+          /*return response (['status' => 'sukses','konten'=>'Verifikasi Berhasil']);*/
         } catch (\Exception $e) {
           DB::rollback();
 
@@ -118,7 +125,7 @@ public function sendEmail($nama,$email,$aktifasi)
                               'm_email' =>$req->email,
                               'm_hp' => $req->no_telpon,
                               'm_password' => md5($req->password),
-                              'm_status_trial' =>'Y',
+                              'm_status_trial' =>'N',
                               'm_created' =>$tgl.' '.$waktu,
                               'm_status_expired'=>date('Y-m-d', strtotime('+7 day',$strtotime)).' '.$waktu,
                               'm_activation_code'=>$aktifasi,
