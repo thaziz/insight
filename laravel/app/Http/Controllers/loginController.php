@@ -41,33 +41,33 @@ class loginController extends Controller
                       return json_encode($dataInfo);
             }
 
+
+
+            $member=DB::table('member')->select('m_status_expired','m_status_verifikasi')->where('m_id',$user->u_member)->first();
+
+            $start=date('Y-m-d H:i:s');                
+            $end=$member->m_status_expired;
+
+            if($member->m_status_verifikasi=='N'){
+                $dataInfo=['status'=>'gagal','konten'=>'Account Belum Diaktifasi'];            
+                return json_encode($dataInfo);
+            }            
+
+            if($start>=$end){
+                $dataInfo=['status'=>'gagal','konten'=>'Login Expired'];            
+                return json_encode($dataInfo);
+            }            
+
+
             if ($user && $user->u_password == md5($req->password)) {
                     Auth::login($user);
-                    $session=DB::table('session')
-                            ->where('s_user_id',$user->u_id)
-                            ->first();
-                    if($session){
-                        $dataInfo=['status'=>'gagal','konten'=>'Sudah Login'];            
-                        return json_encode($dataInfo);
-                    }else{
-                        
-                        $token=$this->token(32);
-                        DB::table('session')
-                                ->insert([
-                                    's_user_id'=>$user->u_id,
-                                    's_token'  =>$token,
-                                ]);
-                    }
-
-
-                    
                     if(Auth::user()->u_role=='Admin'){
                          $url='/admin';
                     }
                     else{
                      $url='/member';   
                     }
-                    $dataInfo=['status'=>'sukses','nama'=>$user->u_username,'redirect'=>$url,'token'=>$token];
+                    $dataInfo=['status'=>'sukses','nama'=>$user->u_username,'redirect'=>$url];
 
                      return json_encode($dataInfo);
 

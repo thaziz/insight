@@ -35,5 +35,6 @@ Route::group(['middleware' => ['web','auth']], function() {
     });
     Route::get('member', function () {
         return view('x');
-    });
+    });    
+    
 });

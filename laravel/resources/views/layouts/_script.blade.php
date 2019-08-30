@@ -103,14 +103,36 @@
 					}
 				});
 		}
+
+		function notif(){
+			$.ajax({
+					type: 'POST',
+					url: baseUrl+'/lnotif',
+					data: {
+					        "_token": "{{ csrf_token() }}",
+					      },
+					success : function(response){
+						$('#lnotif').html(response);						
+					}
+				});
+		}
+
+notif();   
+setInterval(function(){
+notif();   
+}, 60000);
+
+
 function overlayshow(){
 	$.LoadingOverlay("show");
 }
-
+	
 function overlayhide(){
 	setTimeout(function(){
     $.LoadingOverlay("hide");
 	}, 50);
 }
-					
+	
+	
+
 	</script>

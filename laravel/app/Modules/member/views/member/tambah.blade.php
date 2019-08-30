@@ -22,9 +22,16 @@
                     		
 
 											
-						<form id="form">
-							<input type="hidden" name="m_id">						
-
+							<form  enctype="multipart/form-data" id="uploadForm" autocomplete="off">	{{ csrf_field() }}										
+							<div class="col-md-2 col-sm-6 col-xs-12">
+								<label>No Invoice <span style="color: red"> *</span></label>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<div class="form-group form-group-sm" id="div_kategori">
+									<input class="form-control" type="" name="no" readonly="" value="{{$no}}">
+									<input class="form-control" type="hidden" name="u_id" readonly="" value="{{$data->u_id}}">
+								</div>
+							</div>
 							<div class="col-md-2 col-sm-6 col-xs-12">
 								<label>Nama <span style="color: red"> *</span></label>
 							</div>
@@ -61,11 +68,13 @@
 							</div>
 							<div class="col-md-4 col-sm-6 col-xs-12">
 								<div class="form-group form-group-sm" id="div_kategori">
-									<select class="form-control">
+									<select class="form-control" name="paket" id="paket">
+										<option value="">--Pilih--</option>
 										@foreach($paket as $p)
-										<option>{{$p->mp_paket}} - {{$p->mp_nominal}} ({{$p->mp_ket}}) </option>
+										<option data-p="{{$p->mp_nominal}}" value="{{$p->mp_id}}">{{$p->mp_paket}} - {{$p->mp_nominal}} ({{$p->mp_ket}}) </option>
 										@endforeach
 									</select>
+									<input type="hidden" name="nominal" id="nominal">
 								</div>
 							</div>
 
@@ -74,9 +83,10 @@
 							</div>
 							<div class="col-md-4 col-sm-6 col-xs-12">
 								<div class="form-group form-group-sm" id="div_kategori">
-									<select class="form-control">
+									<select id="rek" class="form-control" name="bank">
+										<option value="">--Pilih--</option>
 										@foreach($bank as $b)
-										<option>{{$b->ba_name}} - A/N. {{$b->ba_an}} - No Rek.({{$b->ba_no_rek}})</option>
+										<option data-rek="{{$b->ba_no_rek}}">{{$b->ba_name}} - A/N. {{$b->ba_an}}</option>
 										@endforeach
 									</select>
 								</div>
@@ -88,23 +98,28 @@
 
 							<div class="col-md-4 col-sm-6 col-xs-12">
 								<div class="form-group form-group-sm" id="div_kategori">
-									<input class="form-control" type="file" name="">
+									<input class="form-control" type="file" name="lbukti_transfer">
 								</div>
 							</div>
 
-						</form>												
-											
-											
+							<div class="col-md-2 col-sm-6 col-xs-12">
+								<label>No Rek <span style="color: red"> *</span></label>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<div class="form-group form-group-sm" id="div_kategori">
+									<input type="" name="rek" class="form-control" readonly="" id="norek">
+								</div>
+							</div>							
+																
 					</fieldset>					
-				</div>
-					
+				</div>					
 
 										<div class="widget-footer enter">											
-											<button type="button" class="btn btn-primary" onclick="simpan()">Simpan</button>
+											<button type="submit" class="btn btn-primary">Simpan</button>
 											<a href="{{route('member-aktifasi')}}" class="btn btn-default">Kembali</a>
-											
-										</div>
 
+										</div>
+	</form>	
                     
                 </div>
             </div>
@@ -137,67 +152,44 @@
 
 @endsection
 @section('extra_scripts')
-<script type="text/javascript">
-	
-		$("#m_name").autocomplete({
-			source: baseUrl + '/user/user/getpegawai',
-			select: function(event, ui) {
-				getdata(ui.item.id);
-			}, messages: {
-		        noResults: '',
-    		    results: function() {}
-	    	}
-
-		});
-
-		function getdata(id){
-			$.ajax({
-				type: 'get',
-				data:{id},
-				dataType: 'JSON',
-				url: baseUrl + '/user/user/getdetailpegawai',
-				success : function(response){
-					$('input[name=m_nik]').val(response[0].m_nik);
-					$('textarea[name=m_address]').val(response[0].m_address);
-					$('input[name=m_nohp]').val(response[0].m_nohp);
-					$('input[name=m_email]').val(response[0].m_email);
-					$('input[name=m_id]').val(response[0].m_id);
-				}
-			});
-		}
-
-		function simpan(){
-			if (validation()) {
-				overlayshow();
-				$.ajaxSetup({
-					headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					}
-				});
+<script type="text/javascript">	
+		
+		$("#uploadForm").on('submit',(function(e) {	
+			e.preventDefault();
+			$('.loader').css('display','')
+        	$(".loader").fadeIn("slow");
+			
 				$.ajax({
-					type: 'get',
-					data: 'akses=simpan&'+$('#form').serialize(),
+					type: 'POST',					
 					dataType: 'json',
-					url : baseUrl + '/master/kategori-barang/simpan',
+					data:  new FormData(this),
+					contentType: false,
+					dataType: 'json',
+    	    		cache: false,
+					processData:false,
+					url : "{{route('perpanjangan')}}",
 					success : function(response){
 						if (response.status == 'berhasil') {
+							$(".loader").fadeOut("slow");
 							iziToast.success({							    
 							    message: "<i class='fa fa-clock-o'></i> <i>Berhasil Disimpan!</i>",
 							    position: 'topRight',
 							});
 							$('input[name="k_name"]').val('');
-							/*window.location.href = baseUrl + '/user/user/user';*/
+							window.location.href = baseUrl + '/member-aktifasi/index';
 						} else {							
 							iziToast.error({							    
-							    message: "<i class='fa fa-clock-o'></i> <i>Gagal Disimpan</i>",
+							    message: "<i class='fa fa-clock-o'></i> <i>"+response.konten+"</i>",
 							    position: 'topRight',
 							});
+							$(".loader").fadeOut("slow");
 						}
-						overlayhide();
+						$(".loader").fadeOut("slow");
 					}
 				});
-			}
-		}
+			
+		})
+		)
 
 		function validation(){		
 			var kategori = $('input[name="k_name"]').val();
@@ -213,5 +205,14 @@
 			
 			return true;
 		}
+
+	
+
+	$("#rek").on("change", function(){        
+        $("#norek").val(($(this).find(':selected').data('rek')));        
+    });
+    $("#paket").on("change", function(){        
+        $("#nominal").val(($(this).find(':selected').data('p')));        
+    });
 </script>
 @endsection

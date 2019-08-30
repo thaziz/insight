@@ -25,12 +25,14 @@
 						<table class="table table-striped table-bordered table-hover" id="table_kategori" width="100%">
 							<thead>
 								<tr>									
-									<th data-class="expand">Nama</th>
-									<th data-class="expand">E-mail</th>
-                  <th data-class="expand">No Telpon</th>                  
-                  <th data-class="expand">Tanggal Expired</th>
-                  <th data-class="expand">Status</th>
-									<th>Aksi</th>
+									  <th data-class="expand">Nama Leader</th>
+                    <th data-class="expand">E-mail</th>
+                    <th data-class="expand">No Telpon</th>                  
+                    <th data-class="expand">Tanggal Expired</th>
+                    <th data-class="expand">Status verifikasi</th>
+                    <th data-class="expand">Status Trial</th>
+                    <th data-class="expand">Status Aktif</th>
+                    <!-- <th>Aksi</th> -->
 								</tr>
 							</thead>
 							<tbody id="showdata">
@@ -47,13 +49,15 @@
               </div>
                         <table class="table table-striped table-bordered table-hover" id="child" width="100%">
                           <thead>
-                            <tr>                  
-                              <th data-class="expand">Nama</th>
+                            <tr>                                                
+                              <th data-class="expand">Nama Team</th>
                               <th data-class="expand">E-mail</th>
                               <th data-class="expand">No Telpon</th>                  
                               <th data-class="expand">Tanggal Expired</th>
-                              <th data-class="expand">Status</th>
-                              <th>Aksi</th>
+                              <th data-class="expand">Status verifikasi</th>
+                              <th data-class="expand">Status Trial</th>
+                              <th data-class="expand">Status Aktif</th>
+                              <!-- <th>Aksi</th> -->
                             </tr>
                           </thead>
                           <tbody id="showdata">
@@ -177,12 +181,14 @@ function table(){
               },
             columns: [
             
-            {data: 'm_username', name: 'm_username'},
+             {data: 'm_username', name: 'm_username'},
             {data: 'm_email', name: 'm_email'},
             {data: 'm_hp', name: 'm_hp'},
             {data: 'm_status_expired', name: 'm_status_expired'},
-            {data: 'status', name: 'status'},
-            {data: 'action', name: 'action'},
+            {data: 'status_verifikasi', name: 'status_verifikasi'},
+            {data: 'status_trial', name: 'status_trial'},
+            {data: 'status_aktif', name: 'status_aktif'},
+            /*{data: 'action', name: 'action'},*/
             
             ],
             //responsive: true,
@@ -221,8 +227,11 @@ function tablechild(){
             {data: 'm_email', name: 'm_email'},
             {data: 'm_hp', name: 'm_hp'},
             {data: 'm_status_expired', name: 'm_status_expired'},
-            {data: 'status', name: 'status'},
-            {data: 'action', name: 'action'},
+            {data: 'status_verifikasi', name: 'status_verifikasi'},
+            {data: 'status_trial', name: 'status_trial'},
+            {data: 'status_aktif', name: 'status_aktif'},
+            /*{data: 'action', name: 'action'},*/
+            
             
             ],
             //responsive: true,

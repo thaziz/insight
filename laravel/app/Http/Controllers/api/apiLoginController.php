@@ -42,7 +42,7 @@ class apiLoginController extends Controller
                       return json_encode($dataInfo);
             }
 
-            $member=DB::table('member')->select('m_status_expired')->where('m_id',$user->u_member)->first();
+            $member=DB::table('member')->select('m_status_expired','m_status_verifikasi')->where('m_id',$user->u_member)->first();
             $start=date('Y-m-d H:i:s');                
             $end=$member->m_status_expired;
 
