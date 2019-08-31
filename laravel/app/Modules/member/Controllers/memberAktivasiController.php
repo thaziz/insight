@@ -42,27 +42,27 @@ class memberAktivasiController extends Controller
               })    
                   ->addColumn('status_verifikasi', function ($getdata) {
                   if($getdata->m_status_verifikasi=='Y'){
-                      return '<span class="label label-primary">Sudah</span>';
+                      return '<div  style="text-align: center;" ><span class="label label-primary">Sudah</span></div>';
                   }
                   else if($getdata->m_status_verifikasi=='N'){
-                    return '<span class="label label-danger">Belum</span>'; 
+                    return '<div  style="text-align: center;" ><span class="label label-danger">Belum</span></div>'; 
                   }
                  
               })   
                ->addColumn('status_trial', function ($getdata) {
                  if($getdata->m_status_trial=='Y'){
-                      return '<span class="label label-primary">Aktif</span>';
+                      return '<div  style="text-align: center;" ><span class="label label-primary">Aktif</span></div>';
                   }
                   else if($getdata->m_status_trial=='N'){
-                    return '<span class="label label-danger">Trial</span>'; 
+                    return '<div  style="text-align: center;" ><span class="label label-danger">Trial</span></div>'; 
                   }
               })
               ->addColumn('status_aktif', function ($getdata) {
                   if($getdata->m_status_active=='Y'){
-                      return '<span class="label label-primary">Aktif</span>';
+                      return '<div  style="text-align: center;" ><span class="label label-primary">Aktif</span></div>';
                   }
                   if($getdata->m_status_active=='N'){
-                      return '<button class="btn btn-danger btn-xs" tooltip="true" title="Klik Untuk Aktifasi" onclick="verifikasi('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Tidak</button>';
+                      return '<div  style="text-align: center;" ><button class="btn btn-danger btn-xs" tooltip="true" title="Klik Untuk Aktifasi" onclick="verifikasi('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Tidak</button></div>';
                   }
               })                
               ->rawColumns(['action','status_verifikasi','status_trial','status_aktif'])
@@ -90,27 +90,27 @@ class memberAktivasiController extends Controller
               }) 
               ->addColumn('status_verifikasi', function ($getdata) {
                   if($getdata->m_status_verifikasi=='Y'){
-                      return '<span class="label label-primary">Sudah</span>';
+                      return '<div  style="text-align: center;" ><span class="label label-primary">Sudah</span></div>';
                   }
                   else if($getdata->m_status_verifikasi=='N'){
-                    return '<span class="label label-danger">Belum</span>'; 
+                    return '<div  style="text-align: center;" ><span class="label label-danger">Belum</span></div>'; 
                   }
                  
               })   
                ->addColumn('status_trial', function ($getdata) {
                  if($getdata->m_status_trial=='Y'){
-                      return '<span class="label label-primary">Aktif</span>';
+                      return '<div  style="text-align: center;" ><span class="label label-primary">Aktif</span></div>';
                   }
                   else if($getdata->m_status_trial=='N'){
-                    return '<span class="label label-danger">Trial</span>'; 
+                    return '<div  style="text-align: center;" ><span class="label label-danger">Trial</span></div>'; 
                   }
               })
               ->addColumn('status_aktif', function ($getdata) {
                   if($getdata->m_status_active=='Y'){
-                      return '<span class="label label-primary">Aktif</span>';
+                      return '<div  style="text-align: center;" ><span class="label label-primary">Aktif</span></div>';
                   }
                   if($getdata->m_status_active=='N'){
-                      return '<button class="btn btn-danger btn-xs" tooltip="true" title="Klik Untuk Aktifasi" onclick="verifikasi('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Tidak</button>';
+                      return '<div  style="text-align: center;" ><button class="btn btn-danger btn-xs" tooltip="true" title="Klik Untuk Aktifasi" onclick="verifikasi('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Tidak</button></div>';
                   }
               })                
               ->rawColumns(['action','status_verifikasi','status_trial','status_aktif'])

@@ -5,7 +5,7 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="" src="{{asset('')}}" style="background: white" />
+                            <img alt="image" class="" src="{{asset('img/logo.png')}}" style="background: white" height="80px" width="80px" />
                              </span>                        
                     </div>
                     <div class="logo-element">
@@ -20,13 +20,13 @@
                                   <span>User</span>         
                                                     </a>
                                         </li> -->
-
+<!-- 
                             <li  class="{{ Request::is('master-kode/*')? "active":"" }}" >
                                 <a href="{{ url('/master-kode/index')}}">         
                                   <i class="fa fa-folder-o"></i>
                                   <span>List Member</span>                 
                                 </a>
-                            </li>
+                            </li> -->
                       @endif
                     
                       <li  class="{{ Request::is('member-aktifasi/*')? "active":"" }}" >

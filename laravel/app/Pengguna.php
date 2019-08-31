@@ -66,7 +66,7 @@ class Pengguna extends Model implements AuthenticatableContract, CanResetPasswor
         if( Auth::user()->u_role=='Admin')
             return true;
         else
-            return true;
+            return false;
     }
 
      static function notif(){        
@@ -75,6 +75,10 @@ class Pengguna extends Model implements AuthenticatableContract, CanResetPasswor
 
     static function datanotif(){        
         return DB::table('notif')->where('n_read','N')->get();
+    }
+
+     static function namaUser($id){        
+        return DB::table('member')->select('m_username')->where('m_id',$id)->first()->m_username;
     }
 
 }

@@ -30,7 +30,7 @@ class apiLoginController extends Controller
         $validator = Validator::make($req->all(), $rules);
 
         if ($validator->fails()) {            
-                $dataInfo=['status'=>'gagal','konten'=>'Panjang Karakter Password atau Nama Harus Minimal 4 Karakter '];            
+                $dataInfo=['status_code'=>300,'status'=>'gagal','konten'=>'Panjang Karakter Password atau Nama Harus Minimal 4 Karakter '];            
                 return json_encode($dataInfo);
         } else {
             $email = $req->email;
@@ -38,8 +38,8 @@ class apiLoginController extends Controller
             $user = Pengguna::whereRaw("BINARY `u_username`= ?",[$req->email])->first();
 
             if(empty($user->u_id)){
-                  $dataInfo=['status'=>'gagal','konten'=>'Password atau Nama Tidak Di Temukan'];            
-                      return json_encode($dataInfo);
+                  $dataInfo=['status_code'=>300,'status'=>'gagal','konten'=>'Password atau Nama Tidak Di Temukan'];            
+                      return json_encode([$dataInfo]);
             }
 
             $member=DB::table('member')->select('m_status_expired','m_status_verifikasi')->where('m_id',$user->u_member)->first();
@@ -47,12 +47,12 @@ class apiLoginController extends Controller
             $end=$member->m_status_expired;
 
             if($member->m_status_verifikasi=='N'){
-                $dataInfo=['status'=>'gagal','konten'=>'Account Belum Diaktifasi'];            
+                $dataInfo=['status_code'=>300,'status'=>'gagal','konten'=>'Account Belum Diaktifasi'];            
                 return json_encode($dataInfo);
             }            
 
             if($start>=$end){
-                $dataInfo=['status'=>'gagal','konten'=>'Login Expired'];            
+                $dataInfo=['status_code'=>300,'status'=>'gagal','konten'=>'Login Expired'];            
                 return json_encode($dataInfo);
             }            
 
@@ -91,10 +91,11 @@ class apiLoginController extends Controller
                                    'user_id'=>$user->u_id,
                                    'berlaku'=>$waktu,
                                    'token'=>$session->s_token,
+                                   'status_code'=>200,
                                  ];            
                         return json_encode($dataInfo);
                         }else{
-                          $dataInfo=['status'=>'gagal','konten'=>'Sesion Pada login Berbeda'];
+                          $dataInfo=['status_code'=>300,'status'=>'gagal','konten'=>'Sesion Pada login Berbeda'];
                           return json_encode($dataInfo);
 
                         }
@@ -120,6 +121,7 @@ class apiLoginController extends Controller
                                    'user_id'=>$user->u_id,
                                    'berlaku'=>$waktu,
                                    'token'=>$token,
+                                   'status_code'=>200,
                                  ];            
                     return json_encode($dataInfo);
 
@@ -127,7 +129,7 @@ class apiLoginController extends Controller
 
             } else {      
 
-                 $dataInfo=['status'=>'gagal','konten'=>'Password atau Nama Tidak Di Temukan'];            
+                 $dataInfo=['status_code'=>300,'status'=>'gagal','konten'=>'Password atau Nama Tidak Di Temukan'];            
                  return json_encode($dataInfo);
             }
         }
@@ -143,16 +145,16 @@ class apiLoginController extends Controller
             $session=DB::table('session')
                             ->where('s_user_id',$req->id)
                             ->first();
-            $dataInfo=['status'=>'sukses','konten'=>'Logout Berhasil'];            
+            $dataInfo=['status_code'=>200,'status'=>'sukses','konten'=>'Logout Berhasil'];            
           }else{
-            $dataInfo=['status'=>'gagal','konten'=>'Logout Gagal'];            
+            $dataInfo=['status_code'=>300,'status'=>'gagal','konten'=>'Logout Gagal'];            
           }          
           DB::commit();                    
           return json_encode($dataInfo);
         } catch (\Exception $e) {
           DB::rollback();
 
-          $data=['status'=>'gagal','konten'=>$e->getMessage()];
+          $data=['status_code'=>400,'status'=>'gagal','konten'=>$e->getMessage()];
           return json_encode($data);
         }
         

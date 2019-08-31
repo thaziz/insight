@@ -13,6 +13,11 @@
 
 
             <ul class="nav navbar-top-links navbar-right">
+                 <li>
+                    <a >
+                        {{App\Pengguna::namaUser(Auth::user()->u_member)}}    
+                    </a>
+                </li>
                 @if(Auth::user()->punyaAkses())    
                 <li class="dropdown" id="lnotif">
                 </li>

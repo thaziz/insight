@@ -47,7 +47,7 @@ class apiSubscribeController extends Controller
           foreach ($validator->errors()->all() as $key => $value) {
                   $eror.=$value.'<br>';
           }
-          $dataInfo=['status'=>'gagal','pesan'=>$eror];            
+          $dataInfo=['status_code'=>300,'status'=>'gagal','pesan'=>$eror];            
           return json_encode($dataInfo);        
         } else {
             $data=[
@@ -62,13 +62,13 @@ class apiSubscribeController extends Controller
             
         }
           DB::commit();
-          $data=['status'=>'berhasil','konten'=>'Data Berhasil Disimpan','member_id'=>$req->member_id];
+          $data=['status_code'=>200,'status'=>'berhasil','konten'=>'Data Berhasil Disimpan','member_id'=>$req->member_id];
           return json_encode($data);
           
         } catch (\Exception $e) {
           DB::rollback();
 
-          $data=['status'=>'gagal','konten'=>$e->getMessage()];
+          $data=['status_code'=>300,'status'=>'gagal','konten'=>$e->getMessage()];
           return json_encode($data);
         }
         
@@ -76,13 +76,13 @@ class apiSubscribeController extends Controller
 
 public function data(){
   $data=DB::table('subscribe')->get();
-          $data=['status'=>'berhasil','konten'=>$data];
+          $data=['status_code'=>200,'status'=>'berhasil','konten'=>$data];
           return json_encode($data);
 }
 
 public function show($s_id){
   $data=DB::table('subscribe')->where('s_id',$s_id)->first();
-          $data=['status'=>'berhasil','konten'=>$data];
+          $data=['status_code'=>200,'status'=>'berhasil','konten'=>$data];
           return json_encode($data);
 }
 
@@ -113,7 +113,7 @@ public function update($s_id,Request $req) {
           foreach ($validator->errors()->all() as $key => $value) {
                   $eror.=$value.'<br>';
           }
-          $dataInfo=['status'=>'gagal','pesan'=>$eror];            
+          $dataInfo=['status_code'=>300,'status'=>'gagal','pesan'=>$eror];            
           return json_encode($dataInfo);        
         } else {           
             DB::table('subscribe')->where('s_id',$s_id)
@@ -125,13 +125,13 @@ public function update($s_id,Request $req) {
             
         }
           DB::commit();
-          $data=['status'=>'berhasil','konten'=>'Data Berhasil Diperbarui'];
+          $data=['status_code'=>200,'status'=>'berhasil','konten'=>'Data Berhasil Diperbarui'];
           return json_encode($data);
           
         } catch (\Exception $e) {
           DB::rollback();
 
-          $data=['status'=>'gagal','pesan'=>$e->getMessage()];
+          $data=['status_code'=>300,'status'=>'gagal','pesan'=>$e->getMessage()];
           return json_encode($data);
         }
         
@@ -142,10 +142,10 @@ public function update($s_id,Request $req) {
           $data=DB::table('subscribe')->where('s_id',$s_id);
           if($data->first()){
           $data->delete();
-            $data=['status'=>'berhasil','Data Berhasil Dihapus'];
+            $data=['status_code'=>200,'status'=>'berhasil','Data Berhasil Dihapus'];
             return json_encode($data);
           }else{
-            $data=['status'=>'gagal','konten'=>'Data Tidak Ditemukan'];
+            $data=['status_code'=>300,'status'=>'gagal','konten'=>'Data Tidak Ditemukan'];
             return json_encode($data);
           }
           

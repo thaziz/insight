@@ -29,13 +29,6 @@ Route::delete('analitic-history/delete/{id}', 'api\apiAnaliticHistoryController@
 
 
 
-Route::POST('analitic-history/create', 'api\apiAnaliticHistoryController@create');  
-Route::POST('analitic-history/show/{id}', 'api\apiAnaliticHistoryController@show');  
-Route::GET('analitic-history/data', 'api\apiAnaliticHistoryController@data');  
-Route::POST('analitic-history/update/{id}', 'api\apiAnaliticHistoryController@update');  
-Route::delete('analitic-history/delete/{id}', 'api\apiAnaliticHistoryController@delete');  
-
-
 Route::POST('member-ig-profile/create', 'api\apiMemberigProfileController@create');  
 Route::POST('member-ig-profile/show/{id}', 'api\apiMemberigProfileController@show');  
 Route::GET('member-ig-profile/data', 'api\apiMemberigProfileController@data');  
