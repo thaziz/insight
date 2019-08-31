@@ -20,21 +20,23 @@
                                   <span>User</span>         
                                                     </a>
                                         </li> -->
-<!-- 
-                            <li  class="{{ Request::is('master-kode/*')? "active":"" }}" >
-                                <a href="{{ url('/master-kode/index')}}">         
+
+                            <li  class="{{ Request::is('admin-aktifasi/*')? "active":"" }}" >
+                                <a href="{{ url('/admin-aktifasi/index')}}">         
                                   <i class="fa fa-folder-o"></i>
                                   <span>List Member</span>                 
                                 </a>
-                            </li> -->
+                            </li>
                       @endif
-                    
+                      
+                       @if(!Auth::user()->punyaAkses())
                       <li  class="{{ Request::is('member-aktifasi/*')? "active":"" }}" >
                           <a href="{{ url('/member-aktifasi/index')}}">         
                             <i class="fa fa-folder-o"></i>
                             <span>Member</span>                 
                           </a>
                       </li>
+                      @endif
 
                       <!-- <li  class="{{ Request::is('master-history/*')? "active":"" }}">
                         <a href="{{ url('/master-history/index')}}">         

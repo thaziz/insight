@@ -16,10 +16,18 @@ class mMemberController extends Controller {
 
     
     public function logout() {        
-        $user = Pengguna::find(Auth::user()->m_id);                
-        Session::flush();  
-        Auth::logout();
-        return Redirect('/');
+        
+        if(Auth::user()->u_role=='admin'){        		
+
+        		Session::flush();  
+        		Auth::logout();        
+        		return 'login/admin';	
+        }
+        else if(Auth::user()->u_role=='member'){        		
+        		Session::flush();  
+        		Auth::logout();        
+        		return '/';	
+        }
     }
 
 

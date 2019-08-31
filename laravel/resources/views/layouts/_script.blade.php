@@ -99,7 +99,10 @@
 					        "_token": "{{ csrf_token() }}",
 					      },
 					success : function(response){
-						window.location=baseUrl;
+						if(response=='/')
+							window.location=baseUrl;
+						if(response!='/')
+							window.location=baseUrl+'/'+response;
 					}
 				});
 		}

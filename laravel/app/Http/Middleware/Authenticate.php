@@ -24,19 +24,19 @@ class Authenticate extends Middleware
     {   
         // return route('login');
         // return redirect('login?safe=strict');
-        $url=Request::getPathInfo(); 
+        /*$url=Request::getPathInfo(); */
         
         
-        if($url=='/logout'){
+        /*if($url=='/logout'){
             $url='/thoriq';
-        }
+        }*/
         
         
-        Session::flush();
-        Session::put('url_login',$url);       
+        /*Session::flush();*/
+        /*Session::put('url_login',$url);       */
           
-        $this->redirectTo = '?url='.$url;
-        return $this->redirectTo;
+        /*$this->redirectTo = '?url='.$url;*/
+        return '/';
         
     }
 }

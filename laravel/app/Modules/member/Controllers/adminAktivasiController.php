@@ -23,7 +23,7 @@ class adminAktivasiController extends Controller
     	return view('member::admin-aktifasi.index');
     }
     function data(){         
-         $getdata = DB::table('member')->get();         
+         $getdata = DB::table('member')->where('m_role','member')->get();         
           return Datatables::of($getdata)
               ->addIndexColumn()
               ->addColumn('action', function ($getdata) {

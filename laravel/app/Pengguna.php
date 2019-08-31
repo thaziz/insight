@@ -63,7 +63,7 @@ class Pengguna extends Model implements AuthenticatableContract, CanResetPasswor
 
     static function punyaAkses(){
         
-        if( Auth::user()->u_role=='Admin')
+        if( Auth::user()->u_role=='admin')
             return true;
         else
             return false;

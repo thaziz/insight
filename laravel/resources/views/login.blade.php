@@ -56,7 +56,7 @@ var baseUrl = "{{url('/')}}";
 
         var formInput=$('#login').serialize();        
          $.ajax({
-          url     :  baseUrl+'/login/masuk',
+          url     :  baseUrl+'/login/masuk-admin',
           type    : 'POST', 
           data    :  formInput+"&_token={{ csrf_token() }}",
           dataType: 'json',
@@ -79,8 +79,7 @@ var baseUrl = "{{url('/')}}";
                 alert('');
                 alert('Internal Server Error [500].');
             } else if (exception === 'parsererror') {
-                alert('Requested JSON parse failed.');
-                location.reload();
+                alert('Requested JSON parse failed.');                
             } else if (exception === 'timeout') {
                 alert('Time out error.');
             } else if (exception === 'abort') {

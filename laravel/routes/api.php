@@ -43,6 +43,11 @@ Route::POST('subscribe/update/{id}', 'api\apiSubscribeController@update');
 Route::delete('subscribe/delete/{id}', 'api\apiSubscribeController@delete');  
 
 
+Route::POST('activity/create', 'api\apiActivityController@create');  
+Route::POST('activity/show/{id}', 'api\apiActivityController@show');  
+Route::GET('activity/data', 'api\apiActivityController@data');  
+Route::POST('activity/update/{id}', 'api\apiActivityController@update');  
+Route::delete('activity/delete/{id}', 'api\apiActivityController@delete');  
 
 
   

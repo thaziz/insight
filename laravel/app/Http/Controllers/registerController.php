@@ -51,7 +51,7 @@ public function verify(Request $req){
           DB::commit();
           Session::flush();  
           Auth::logout();
-          return redirect()->route('login-member');
+          return redirect()->route('daftar');
           /*return response (['status' => 'sukses','konten'=>'Verifikasi Berhasil']);*/
         } catch (\Exception $e) {
           DB::rollback();
@@ -85,11 +85,12 @@ public function sendEmail($nama,$email,$aktifasi)
         $rules = array(
             'nama' => 'unique:member,m_username|required|min:4',
             'email' => 'email|unique:member,m_email|required|min:4',
-            'no_telpon' => 'required|min:4',
+            'no_telpon' => 'required|min:4|numeric',
             'password' => 'required|min:4',
         );
 
         $custom=[
+                  'numeric' => ':Attribute Harus Angka.',                        
                   'unique'             => ':Attribute Sudah Terdaftar.',
                   'required'             => ':Attribute Wajib Di isi.',
                   'email'                => 'Alamat E-Mail belum benar.',                    
