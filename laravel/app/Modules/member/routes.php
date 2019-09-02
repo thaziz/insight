@@ -21,8 +21,10 @@ Route::group(['namespace' => 'App\Modules\member\Controllers', 'middleware'=>['w
 
 	Route::get('admin-aktifasi/index', 'adminAktivasiController@index')->name('admin-aktifasi');    
 	Route::POST('admin-aktifasi/data', 'adminAktivasiController@data')->name('admin-aktifasi-data');
-	Route::POST('admin-aktifasi/data-child', 'adminAktivasiController@dataChild')->name('admin-aktifasi-data-child');    	
-	Route::get('admin-aktifasi/verivikasi/{id}/{token}', 'adminAktivasiController@data_verifikasi')->name('admin-aktifasi-tambah');
+
+	Route::GET('/verifikasi-admin/simpan-status', 'adminAktivasiController@simpanStatus')->name('admin-aktifasi-status');    	
+
+	Route::get('admin-aktifasi/data-verivikasi', 'adminAktivasiController@data_verifikasi')->name('admin-aktifasi-data-detail');
 
 
 

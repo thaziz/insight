@@ -59,7 +59,10 @@ class adminAktivasiController extends Controller
                       return '<span class="label label-primary">Aktif</span>';
                   }
                   if($getdata->m_status_active=='N'){
-                      return '<button class="btn btn-danger btn-xs" tooltip="true" title="Klik Untuk Aktifasi" onclick="verifikasi('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Tidak</button>';
+                      return '<div  style="text-align: center;" ><button class="btn btn-danger btn-xs" tooltip="true" title="Lakukan Perpanjangan" >Non Aktif</button></div>';
+                  }
+                   if($getdata->m_status_active=='B'){
+                      return '<div  style="text-align: center;" ><button class="btn btn-warning btn-xs" tooltip="true" title="Klik Untuk Aktifasi" onclick="verifikasiAdmin('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Sudah Membayar</button></div>';
                   }
               })                
               ->rawColumns(['action','status_verifikasi','status_trial','status_aktif'])
@@ -68,25 +71,24 @@ class adminAktivasiController extends Controller
 
 
     
-    function data_verifikasi($id,$token){
+    function data_verifikasi(Request $req){
 
-      $data=Pengguna::where('u_member',$id)
-            ->leftjoin('member','m_id','=','u_member')
-            ->leftjoin('session','u_id','=','s_user_id')
-            ->first();
-      if($data->m_parrent_m_id==0){
-        $no=$this->getCodeGenerated('TR-');
-      }else{
-        $no=$this->getCodeGenerated('AT-');  
-      }
+      $mem=DB::table('member')->where('m_id',$req->m_id)->first();
+      $u_id=Pengguna::where('u_member',$req->m_id)->first()->u_id;
+      $invoice=DB::table('invoice')
+                  ->join('master_paket','mp_id','=','i_type')
+                  ->join('bank_account','ba_id','=','i_bank')
+                  ->where('i_user_id',$u_id)->where('i_status','N')->first();
+                /*dd($invoice);*/
 
-      if($token==md5($data->u_username)){               
-        $paket=DB::table('master_paket')->get();
-        $bank=DB::table('bank_account')->get();
-        return view('member::admin-aktifasi.tambah',compact('data','paket','bank','no')); 
-      }else{
-        return '404';
-      }
+      $historyinvoice=DB::table('invoice')->where('i_user_id',$u_id)->where('i_status','Y')->get();
+      $data=['status'=>'sukses','mem'=>$mem,'invoice'=>$invoice,'historyinvoice'=>$historyinvoice];
+
+      return json_encode($data);
+
+
+
+      
     }  
 
 public function getCodeGenerated($kode){
@@ -102,86 +104,19 @@ public function getCodeGenerated($kode){
 
 
   
-    function simpan(Request $req){
+    function simpanStatus(Request $req){
     	DB::beginTransaction();
         try {      
-          
-        $rules = array(
-            'bank' => 'required',
-            'paket' => 'required',
-            'no' => 'required',
-        );
-        $custom=[
-                  'required'             => ':Attribute Wajib Di isi.',
-                  'numeric'             => ':Attribute Wajib Angka',
-                  'email'                => 'Alamat E-Mail belum benar.',                    
-                  'min'                  => [
-                        'numeric' => ':Attribute Minimal :min Karakter.',                        
-                        'string'  => ':Attribute Minimal :min Karakter.',    
-                        'file'  => ':Attribute Tidak Boleh Kosong.',    
+          /*dd(strtotime('2019-09-07 18:44:53'));*/
+          /*dd(date('Y-m-d H:i:s',1567856693));*/
+      DB::table('member')->where('m_id',$req->member)->update([
+          'm_status_active'=>'Y',
+      ]);
 
-                        
-                    ],
-
-                ];
-        $validator = Validator::make($req->all(), $rules,$custom);
+      DB::table('invoice')->where('i_user_id',$req->user)->update([
+          'i_status'=>'Y',
+      ]);
         
-
-        if ($validator->fails()) {                          
-        $eror='';
-
-          foreach ($validator->errors()->all() as $key => $value) {
-
-                  $eror.=$value;
-
-
-
-                  if($eror!='')
-                    $eror=$eror.'<br>';
-
-          }
-
-
-                $dataInfo=['status'=>'gagal','konten'=>$eror];            
-                return json_encode($dataInfo);
-        
-        }
-
-       $imgPath = null;
-            $tgl = Carbon::now('Asia/Jakarta');            
-            $dir = 'image/uploads';
-            $childPath = $dir . '/';
-            $path = $childPath;
-            $file = $req->file('lbukti_transfer');
-            $name = null;            
-            if ($file != null) {
-                  $name = time() .'.'. $file->getClientOriginalExtension();
-                        $file->move($path, $name);
-                        $imgPath = $childPath . $name;
-            } else {
-                    $imgPath = null;
-                    $dataInfo=['status'=>'gagal','konten'=>'File Bukti Transfer Harus diupload'];            
-                    return json_encode($dataInfo);
-            }
-
-
-                
-    	DB::table('invoice')->insert([                
-    						'i_user_id' =>$req->u_id,    						
-                'i_invoice' =>$req->no,
-                'i_nominal' =>$req->nominal,
-                'i_type' =>$req->paket,
-                'i_tanggal' =>date('Y-m-d H:i:s'),
-                'i_status' =>'N',
-                'i_image' =>$imgPath,                
-    					  ]);
-
-      DB::table('notif')->insert([                                
-                'n_type' =>'Invoice',
-                'n_no' =>$req->no,
-                'n_userid' =>$req->u_id,
-                'n_read' =>'N',                           
-                ]);
     	 DB::commit();
     	 $data=['status'=>'berhasil','konten'=>''];
           return json_encode($data);

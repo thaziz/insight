@@ -51,7 +51,7 @@ class memberAktivasiController extends Controller
               })   
                ->addColumn('status_trial', function ($getdata) {
                  if($getdata->m_status_trial=='Y'){
-                      return '<div  style="text-align: center;" ><span class="label label-primary">Aktif</span></div>';
+                      return '<div  style="text-align: center;" ><span class="label label-primary">Trial</span></div>';
                   }
                   else if($getdata->m_status_trial=='N'){
                     return '<div  style="text-align: center;" ><span class="label label-danger">Trial</span></div>'; 
@@ -63,6 +63,9 @@ class memberAktivasiController extends Controller
                   }
                   if($getdata->m_status_active=='N'){
                       return '<div  style="text-align: center;" ><button class="btn btn-danger btn-xs" tooltip="true" title="Klik Untuk Aktifasi" onclick="verifikasi('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Tidak</button></div>';
+                  }
+                   if($getdata->m_status_active=='B'){
+                      return '<div  style="text-align: center;" ><span class="label label-warning btn-xs" tooltip="true" title="Klik Untuk Aktifasi">Sudah Membayar</span></div>';
                   }
               })                
               ->rawColumns(['action','status_verifikasi','status_trial','status_aktif'])
@@ -99,7 +102,7 @@ class memberAktivasiController extends Controller
               })   
                ->addColumn('status_trial', function ($getdata) {
                  if($getdata->m_status_trial=='Y'){
-                      return '<div  style="text-align: center;" ><span class="label label-primary">Aktif</span></div>';
+                     return '<div  style="text-align: center;" ><span class="label label-primary">Trial</span></div>';
                   }
                   else if($getdata->m_status_trial=='N'){
                     return '<div  style="text-align: center;" ><span class="label label-danger">Trial</span></div>'; 
@@ -110,7 +113,10 @@ class memberAktivasiController extends Controller
                       return '<div  style="text-align: center;" ><span class="label label-primary">Aktif</span></div>';
                   }
                   if($getdata->m_status_active=='N'){
-                      return '<div  style="text-align: center;" ><button class="btn btn-danger btn-xs" tooltip="true" title="Klik Untuk Aktifasi" onclick="verifikasi('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Tidak</button></div>';
+                      return '<div  style="text-align: center;" ><button class="btn btn-danger btn-xs" tooltip="true" title="Lakukan Perpanjangan" onclick="verifikasi('.$getdata->m_id.',\''.md5($getdata->m_email).'\')" >Non Aktif</button></div>';
+                  }
+                   if($getdata->m_status_active=='B'){
+                      return '<div  style="text-align: center;" ><span class="label label-warning btn-xs" tooltip="true" title="Klik Untuk Aktifasi">Sudah Membayar</span></div>';
                   }
               })                
               ->rawColumns(['action','status_verifikasi','status_trial','status_aktif'])
@@ -221,8 +227,13 @@ public function getCodeGenerated($kode){
                 'i_type' =>$req->paket,
                 'i_tanggal' =>date('Y-m-d H:i:s'),
                 'i_status' =>'N',
-                'i_image' =>$imgPath,                
+                'i_image' =>$imgPath,                             
     					  ]);
+      $mem=Pengguna::where('u_id',$req->u_id)->first()->u_member;
+      DB::table('member')->where('m_id',$mem)->update([
+        'm_status_active'=>'B',   
+      ]);
+      
 
       DB::table('notif')->insert([                                
                 'n_type' =>'Invoice',

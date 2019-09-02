@@ -31,7 +31,7 @@
                     <th data-class="expand">Tanggal Expired</th>
                     <th data-class="expand">Status verifikasi</th>
                     <th data-class="expand">Status Trial</th>
-                    <th data-class="expand">Status Aktif</th>
+                    <th data-class="expand">Status Member</th>
                     <!-- <th>Aksi</th> -->
 								</tr>
 							</thead>
@@ -56,7 +56,7 @@
                               <th data-class="expand">Tanggal Expired</th>
                               <th data-class="expand">Status verifikasi</th>
                               <th data-class="expand">Status Trial</th>
-                              <th data-class="expand">Status Aktif</th>
+                              <th data-class="expand">Status Member</th>
                               <!-- <th>Aksi</th> -->
                             </tr>
                           </thead>
